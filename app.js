@@ -1,8 +1,11 @@
-const { error } = require('console');
-const mongoose = require('mongoose');
-const urldb = "mongodb://localhost:27017";
+import mongoose from "mongoose";
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import { test } from "./Backend/controllers/alumno.controller.js";
+dotenv.config();
 
-mongoose.connect(urldb)
+mongoose.connect(process.env.urldb)
 .then(()=>{
     console.log("funciona la conexión a la base de datos");
 })
@@ -10,25 +13,11 @@ mongoose.connect(urldb)
     console.log("no funciona la conexión a la base de datos",error);
 })
 
-const EsquemaAlumnos = new mongoose.Schema({
-    name:{
-        type:String
-    },
-    apepat:{
-        type:String
-    },
-    apemat:{
-        type:String
-    },
-    edad:{
-        type:Number
-    }
+const app=express();
+app.use(cors());
+
+app.listen(4000,()=>{
+    console.log("Se escucha correctamente el servidor.");
 })
 
-const modeloAlumnos = new mongoose.model("Tabla de Alumnos", EsquemaAlumnos);
-
-modeloAlumnos.create({
-    name:"Andrés",
-    apepat:"Dorado",
-    edd:31
-})
+test();
